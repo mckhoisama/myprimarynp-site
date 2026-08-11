@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin — myprimarynp</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;700&family=Work+Sans:ital,wght@0,400;0,500;0,700;1,400&family=DM+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+  body{background:#FFFFFF}
+  /* SHELL */
+  .shell{display:grid;grid-template-columns:248px 1fr;min-height:100vh}
+  aside{background:var(--ink);color:#D8CFC2;padding:22px 14px;position:sticky;top:0;height:100vh;overflow-y:auto}
+  aside .logo{display:flex;align-items:center;gap:10px;padding:6px 10px 18px;border-bottom:1px solid #4A443D;margin-bottom:14px}
+  aside .logo .word{font-family:'Outfit',sans-serif;font-size:19px;color:var(--linen)}
+  aside .logo .word b{color:var(--gold);font-weight:700}
+  aside .grp{font-family:'DM Mono',monospace;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:#8C7F6E;padding:16px 10px 8px}
+  aside button.nav{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:none;border:none;color:#D8CFC2;font-family:'Work Sans',sans-serif;font-size:14px;font-weight:500;padding:10px 12px;border-radius:10px;cursor:pointer}
+  aside button.nav:hover{background:#4A443D}
+  aside button.nav.on{background:var(--clay);color:#fff;font-weight:700}
+  aside button.nav .cnt{margin-left:auto;background:var(--gold);color:var(--ink);font-family:'DM Mono',monospace;font-size:10.5px;border-radius:999px;padding:2px 8px}
+  aside .foot{margin-top:18px;padding:14px 10px;border-top:1px solid #4A443D;font-size:12.5px}
+  aside .foot a{color:var(--gold);text-decoration:none}
+  main{padding:34px 40px 60px;max-width:1160px}
+  .pagehead{display:flex;justify-content:space-between;align-items:end;gap:14px;flex-wrap:wrap;margin-bottom:22px}
+  .pagehead h2{font-size:30px}
+  .panel-note{font-size:13px;color:var(--ink-mute);margin-top:6px}
+  /* WIDGETS */
+  .kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:24px}
+  .kpi{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px}
+  .kpi .v{font-family:'Outfit',sans-serif;font-weight:700;font-size:26px}
+  .kpi .l{font-size:12.5px;color:var(--ink-mute)}
+  .row-item{display:flex;justify-content:space-between;align-items:center;gap:14px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 18px;margin-bottom:10px;font-size:14.5px}
+  .row-item .sub{font-size:12.5px;color:var(--ink-mute)}
+  .chip{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:5px 12px;border-radius:999px;white-space:nowrap}
+  .chip.ok{background:#EFF3EE;color:#4F6B4B}
+  .chip.warn{background:#FBEEDD;color:#9A6A1F}
+  .chip.new{background:#FDEEE8;color:#C25A3F}
+  .btn-xs{font-family:'Work Sans',sans-serif;font-weight:700;font-size:13px;padding:8px 16px;border-radius:999px;border:none;cursor:pointer;background:var(--clay);color:#fff}
+  .btn-xs.ghost{background:transparent;border:1.5px solid var(--ink);color:var(--ink)}
+  .two{display:grid;grid-template-columns:1.15fr .85fr;gap:20px}
+  .agent{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 20px;margin-bottom:12px}
+  .agent .nm{font-family:'Outfit',sans-serif;font-weight:700;font-size:16px}
+  .agent p{font-size:13.5px;color:var(--ink-soft);margin-top:4px}
+  .agent .meta{font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-mute);margin-top:8px;letter-spacing:.06em}
+  .log{background:var(--ink);color:#D8CFC2;border-radius:16px;padding:20px;font-family:'DM Mono',monospace;font-size:12.5px;line-height:2;max-height:420px;overflow:auto}
+  .log .t{color:#8C7F6E}.log .g{color:#9FBF9A}.log .o{color:#E9A23B}
+  .draft{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;margin-bottom:12px}
+  .draft h4{font-family:'Outfit',sans-serif;font-size:16px;margin-bottom:6px}
+  .draft p{font-size:13.5px;color:var(--ink-soft)}
+  /* SETTINGS */
+  .set-card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:26px 28px;margin-bottom:18px}
+  .set-card h3{font-family:'Outfit',sans-serif;font-weight:700;font-size:18px;margin-bottom:4px}
+  .set-card .desc{font-size:13px;color:var(--ink-mute);margin-bottom:14px}
+  .set-row{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:13px 0;border-top:1px solid var(--linen-2)}
+  .set-row:first-of-type{border-top:none}
+  .set-row .lab b{font-size:14.5px}
+  .set-row .lab .sub{font-size:12.5px;color:var(--ink-mute)}
+  .set-row input[type=text],.set-row input[type=number],.set-row select{width:240px;padding:9px 12px;font-size:14px}
+  .sw{appearance:none;width:44px;height:24px;border-radius:999px;background:#D8CFC2;position:relative;cursor:pointer;transition:.2s;flex-shrink:0}
+  .sw:checked{background:var(--sage-dark)}
+  .sw::after{content:'';position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:.2s}
+  .sw:checked::after{left:23px}
+  .sw:disabled{opacity:.55;cursor:not-allowed}
+  .locked{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;color:#9A6A1F;background:#FBEEDD;border-radius:999px;padding:3px 9px;margin-left:8px;vertical-align:middle}
+  .savebar{display:flex;justify-content:flex-end;gap:10px;margin-top:14px}
+  .tab{display:none}.tab.on{display:block}
+  @media(max-width:980px){.shell{grid-template-columns:1fr}aside{position:static;height:auto}.kpis{grid-template-columns:1fr 1fr}.two{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="demo-note">Admin demo · not linked from the public site · sample data only — production admin lives inside the EHR + a private dashboard</div>
+
+<!-- LOGIN -->
+<div id="alogin">
+  <section style="padding:60px 0"><div class="wrap">
+    <div class="login-card">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px"><svg width="34" height="34" viewBox="0 0 120 120"><g stroke="#E9A23B" stroke-width="7" stroke-linecap="round"><line x1="60" y1="16" x2="60" y2="30"/><line x1="29" y1="29" x2="39" y2="39"/><line x1="91" y1="29" x2="81" y2="39"/><line x1="14" y1="60" x2="28" y2="60"/><line x1="106" y1="60" x2="92" y2="60"/></g><path d="M 33 78 A 27 27 0 0 1 87 78 Z" fill="#D96C4F"/><rect x="20" y="84" width="80" height="6" rx="3" fill="#2E2A26"/></svg><span style="font-family:'Outfit',sans-serif;font-size:21px">myprimary<b style="color:var(--clay)">np</b> <span class="mono" style="color:#9A6A1F">admin</span></span></div>
+      <h2 style="font-size:25px">Provider sign-in</h2>
+      <form onsubmit="document.getElementById('alogin').style.display='none';document.getElementById('shell').style.display='grid';return false">
+        <label for="aem">Email</label><input id="aem" type="email" required placeholder="ann@myprimarynp.com">
+        <label for="apw">Password</label><input id="apw" type="password" required placeholder="••••••••">
+        <button class="btn btn-clay" style="margin-top:22px;width:100%;justify-content:center" type="submit">Sign in →</button>
+        <p style="font-size:12.5px;color:var(--ink-mute);margin-top:14px;text-align:center">Demo — any credentials work. Production: SSO + 2FA, provider vs. staff roles, full audit log.</p>
+      </form>
+    </div>
+  </div></section>
+</div>
+
+<!-- SHELL -->
+<div class="shell" id="shell" style="display:none">
+  <aside>
+    <div class="logo"><svg width="30" height="30" viewBox="0 0 120 120"><g stroke="#E9A23B" stroke-width="7" stroke-linecap="round"><line x1="60" y1="16" x2="60" y2="30"/><line x1="29" y1="29" x2="39" y2="39"/><line x1="91" y1="29" x2="81" y2="39"/><line x1="14" y1="60" x2="28" y2="60"/><line x1="106" y1="60" x2="92" y2="60"/></g><path d="M 33 78 A 27 27 0 0 1 87 78 Z" fill="#D96C4F"/><rect x="20" y="84" width="80" height="6" rx="3" fill="#FAF4EA"/></svg><span class="word">myprimary<b>np</b></span></div>
+    <div class="grp">Care</div>
+    <button class="nav on" onclick="go(event,'t-today')">🗓️ Dashboard</button>
+    <button class="nav" onclick="go(event,'t-intake')">📋 Intake queue <span class="cnt">3</span></button>
+    <button class="nav" onclick="go(event,'t-rx')">💊 Refill requests <span class="cnt">3</span></button>
+    <div class="grp">Growth</div>
+    <button class="nav" onclick="go(event,'t-agents')">🤖 AI agents</button>
+    <button class="nav" onclick="go(event,'t-content')">📝 Content queue <span class="cnt">3</span></button>
+    <button class="nav" onclick="go(event,'t-reviews')">⭐ Reviews <span class="cnt">1</span></button>
+    <div class="grp">Settings</div>
+    <button class="nav" onclick="go(event,'t-site')">🌐 Site settings</button>
+    <button class="nav" onclick="go(event,'t-portal')">🔐 Client portal</button>
+    <button class="nav" onclick="go(event,'t-patients')">🧑‍⚕️ Patient settings</button>
+    <button class="nav" onclick="go(event,'t-sched')">⏰ Scheduling</button>
+    <button class="nav" onclick="go(event,'t-billing')">💳 Billing &amp; payments</button>
+    <button class="nav" onclick="go(event,'t-integrations')">🔌 Integrations</button>
+    <button class="nav" onclick="go(event,'t-team')">👥 Team &amp; roles</button>
+    <button class="nav" onclick="go(event,'t-notifs')">🔔 Notifications</button>
+    <button class="nav" onclick="go(event,'t-audit')">🧾 Audit log</button>
+    <div class="foot">Signed in as<br><b style="color:var(--linen)">Dr. Ann · Provider-Admin</b><br><a href="index.html">View site →</a></div>
+  </aside>
+
+  <main>
+
+    <!-- DASHBOARD -->
+    <div class="tab on" id="t-today">
+      <div class="pagehead"><div><span class="mono">Tuesday, August 11</span><h2>Good morning, Ann 🌅</h2></div></div>
+      <div class="kpis">
+        <div class="kpi"><div class="v">6</div><div class="l">Visits today</div></div>
+        <div class="kpi"><div class="v" style="color:var(--clay)">3</div><div class="l">Intakes awaiting review</div></div>
+        <div class="kpi"><div class="v">4</div><div class="l">Unread messages</div></div>
+        <div class="kpi"><div class="v">42</div><div class="l">Active weight-loss members</div></div>
+        <div class="kpi"><div class="v">$5,418</div><div class="l">Monthly recurring revenue</div></div>
+      </div>
+      <div class="two"><div>
+        <div class="mono" style="margin-bottom:10px">Today's schedule</div>
+        <div class="row-item"><div><b>8:30 AM — Jane D.</b><div class="sub">Weight loss follow-up · Zepbound 7.5 mg · month 5</div></div><div style="display:flex;gap:8px"><span class="chip ok">Confirmed</span><button class="btn-xs">Join video</button></div></div>
+        <div class="row-item"><div><b>9:15 AM — Marcus B.</b><div class="sub">NEW · Weight loss initial evaluation · intake reviewed ✓</div></div><div style="display:flex;gap:8px"><span class="chip new">New patient</span><button class="btn-xs">Join video</button></div></div>
+        <div class="row-item"><div><b>10:45 AM — Rosa V.</b><div class="sub">Primary care · BP check · labs resulted yesterday</div></div><div style="display:flex;gap:8px"><span class="chip ok">Confirmed</span><button class="btn-xs">Join video</button></div></div>
+        <div class="row-item"><div><b>1:00 PM — Tommy N.</b><div class="sub">Weight loss follow-up · Wegovy 1 mg · titration due</div></div><div style="display:flex;gap:8px"><span class="chip warn">Unconfirmed</span><button class="btn-xs ghost">Remind</button></div></div>
+        <div class="row-item"><div><b>2:30 PM — Denise K.</b><div class="sub">NEW · Primary care · sinus symptoms</div></div><div style="display:flex;gap:8px"><span class="chip new">New patient</span><button class="btn-xs">Join video</button></div></div>
+        <div class="row-item"><div><b>4:15 PM — Paul S.</b><div class="sub">Weight loss follow-up · Foundayo 12 mg · month 2</div></div><div style="display:flex;gap:8px"><span class="chip ok">Confirmed</span><button class="btn-xs">Join video</button></div></div>
+      </div>
+      <div>
+        <div class="mono" style="margin-bottom:10px">Unread messages</div>
+        <div class="row-item"><div><b>Jane D.</b><div class="sub">"That's amazing news, thank you!!"</div></div><button class="btn-xs ghost">Open</button></div>
+        <div class="row-item"><div><b>Paul S.</b><div class="sub">"Is it normal to feel full so fast?"</div></div><button class="btn-xs ghost">Open</button></div>
+        <div class="row-item"><div><b>Rosa V.</b><div class="sub">"Can you resend the lab order?"</div></div><button class="btn-xs ghost">Open</button></div>
+        <div class="row-item"><div><b>Marcus B.</b><div class="sub">"Do I need to fast before tomorrow?"</div></div><button class="btn-xs ghost">Open</button></div>
+      </div></div>
+    </div>
+
+    <!-- INTAKE -->
+    <div class="tab" id="t-intake">
+      <div class="pagehead"><div><h2>Intake queue</h2><div class="panel-note">Review every questionnaire <b>before</b> the initial video visit. Nevada location attested ✓ on all.</div></div></div>
+      <div class="row-item"><div><b>Marcus B. · 34M</b><div class="sub">BMI 33.4 · goal −40 lbs · no contraindications flagged · visit today 9:15 AM</div></div><div style="display:flex;gap:8px"><span class="chip ok">Reviewed</span><button class="btn-xs ghost">Re-open</button></div></div>
+      <div class="row-item"><div><b>Lena F. · 45F</b><div class="sub">BMI 31.0 · HTN on lisinopril · ⚠ gallstone history — discuss at visit</div></div><div style="display:flex;gap:8px"><span class="chip warn">Needs review</span><button class="btn-xs">Review intake</button></div></div>
+      <div class="row-item"><div><b>Omar H. · 29M</b><div class="sub">BMI 27.2 + prediabetes (A1c 6.1 self-reported) · wants oral option</div></div><div style="display:flex;gap:8px"><span class="chip warn">Needs review</span><button class="btn-xs">Review intake</button></div></div>
+      <div class="row-item"><div><b>Priya D. · 52F</b><div class="sub">⚠ personal history of medullary thyroid carcinoma — GLP-1 contraindicated; offer alternatives at visit</div></div><div style="display:flex;gap:8px"><span class="chip new">Flagged</span><button class="btn-xs">Review intake</button></div></div>
+    </div>
+
+    <!-- RX -->
+    <div class="tab" id="t-rx">
+      <div class="pagehead"><div><h2>Refill requests</h2><div class="panel-note">Check-in questionnaire attached to each request.</div></div></div>
+      <div class="row-item"><div><b>Jane D. — Zepbound 7.5 mg → continue</b><div class="sub">No side effects · −4 lbs this month · ships Aug 21</div></div><button class="btn-xs">Approve &amp; e-prescribe</button></div>
+      <div class="row-item"><div><b>Tommy N. — Wegovy 1 mg → 1.7 mg titration</b><div class="sub">Mild nausea wk 1, resolved · confirm at 1:00 PM visit</div></div><button class="btn-xs ghost">Hold for visit</button></div>
+      <div class="row-item"><div><b>Paul S. — Foundayo 12 mg → continue</b><div class="sub">Early satiety (expected) · counseled via message</div></div><button class="btn-xs">Approve &amp; e-prescribe</button></div>
+    </div>
+
+    <!-- AGENTS -->
+    <div class="tab" id="t-agents">
+      <div class="pagehead"><div><h2>AI agents</h2><div class="panel-note">Every content agent drafts; Ann approves. No PHI flows through any agent.</div></div></div>
+      <div class="two"><div>
+        <div class="agent"><div><div class="nm">✍️ Blog Writer</div><p>Drafts one SEO post/week from the keyword plan → content queue for medical review.</p><div class="meta">WEEKLY · MON 6:00 AM · LAST RUN: TODAY ✓</div></div><div style="display:flex;flex-direction:column;gap:8px;align-items:end"><span class="chip ok">Active</span><button class="btn-xs ghost">Run now</button></div></div>
+        <div class="agent"><div><div class="nm">🔍 SEO Optimizer</div><p>Monthly crawl: metas, schema, sitemap, Core Web Vitals, local rankings, GBP posts.</p><div class="meta">MONTHLY · 1ST · LAST RUN: AUG 1 ✓</div></div><div style="display:flex;flex-direction:column;gap:8px;align-items:end"><span class="chip ok">Active</span><button class="btn-xs ghost">Run now</button></div></div>
+        <div class="agent"><div><div class="nm">📣 Social Media</div><p>Approved posts → IG/FB/TikTok captions, queued for weekly batch approval.</p><div class="meta">WEEKLY · WED · LAST RUN: AUG 6 ✓</div></div><div style="display:flex;flex-direction:column;gap:8px;align-items:end"><span class="chip ok">Active</span><button class="btn-xs ghost">Run now</button></div></div>
+        <div class="agent"><div><div class="nm">⭐ Review Responder</div><p>HIPAA-safe reply drafts for Google reviews (never confirms patient status).</p><div class="meta">DAILY · 7:00 AM · 1 DRAFT PENDING</div></div><div style="display:flex;flex-direction:column;gap:8px;align-items:end"><span class="chip warn">1 pending</span><button class="btn-xs">Review</button></div></div>
+        <div class="agent"><div><div class="nm">💾 Daily Backup</div><p>Nightly repo push + versioned content archive. PHI backups stay with the EHR vendor (BAA).</p><div class="meta">DAILY · 2:00 AM · 47 SNAPSHOTS ✓</div></div><div style="display:flex;flex-direction:column;gap:8px;align-items:end"><span class="chip ok">Active</span><button class="btn-xs ghost">Run now</button></div></div>
+        <div class="agent"><div><div class="nm">📊 Analytics Reporter</div><p>Weekly funnel: visits → quiz → bookings → members, with recommendations.</p><div class="meta">WEEKLY · FRI 5:00 PM · LAST RUN: AUG 7 ✓</div></div><div style="display:flex;flex-direction:column;gap:8px;align-items:end"><span class="chip ok">Active</span><button class="btn-xs ghost">Run now</button></div></div>
+        <div class="agent"><div><div class="nm">🛡️ Compliance Checker</div><p>FTC claims, disclaimers, credential styling ("Dr. Ann, DNP, APRN, FNP-C"), "compounded" mentions. Blocks publishing on failure.</p><div class="meta">ON PUBLISH + WEEKLY · LAST RUN: TODAY ✓</div></div><div style="display:flex;flex-direction:column;gap:8px;align-items:end"><span class="chip ok">Active</span><button class="btn-xs ghost">Run now</button></div></div>
+      </div>
+      <div>
+        <div class="mono" style="margin-bottom:10px">Agent activity log</div>
+        <div class="log">
+<span class="t">Aug 11 07:02</span> <span class="g">review-responder</span> new 5★ review → reply drafted, queued<br>
+<span class="t">Aug 11 06:04</span> <span class="g">blog-writer</span> draft: "GLP-1s and Medicare: the $50 Bridge program"<br>
+<span class="t">Aug 11 02:00</span> <span class="g">daily-backup</span> repo pushed (a3f9c21) · archive 47 · verify ✓<br>
+<span class="t">Aug 10 09:15</span> <span class="o">compliance-checker</span> ⚠ "guaranteed results" → BLOCKED<br>
+<span class="t">Aug 08 17:00</span> <span class="g">analytics-reporter</span> wk 32: 1,204 visits · 18 bookings · 6 members<br>
+<span class="t">Aug 06 12:00</span> <span class="g">social-media</span> 3 posts queued<br>
+<span class="t">Aug 01 06:00</span> <span class="g">seo-optimizer</span> 14 fixes · 2 suggestions → queue
+        </div>
+      </div></div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="tab" id="t-content">
+      <div class="pagehead"><div><h2>Content queue</h2><div class="panel-note">AI drafts wait here until <b>Ann approves</b> — nothing medical publishes without her review.</div></div></div>
+      <div class="draft"><div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap"><h4>GLP-1s and Medicare: the new $50 Bridge program</h4><span class="chip warn">Awaiting medical review</span></div>
+        <p>Blog Writer · today 6:04 AM · 1,240 words · keyword: "medicare glp-1 coverage las vegas" · compliance ✓</p>
+        <div style="display:flex;gap:10px;margin-top:12px"><button class="btn-xs">Review &amp; approve</button><button class="btn-xs ghost">Edit</button><button class="btn-xs ghost">Discard</button></div></div>
+      <div class="draft"><div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap"><h4>City page: Telehealth primary care in Henderson</h4><span class="chip warn">Awaiting review</span></div>
+        <p>SEO Optimizer · Aug 1 · confirm Henderson is in scope before publishing (currently Las Vegas only)</p>
+        <div style="display:flex;gap:10px;margin-top:12px"><button class="btn-xs">Review &amp; approve</button><button class="btn-xs ghost">Discard</button></div></div>
+      <div class="draft"><div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap"><h4>Success stories page</h4><span class="chip new">Blocked by compliance</span></div>
+        <p>⚠ "guaranteed results" violates FTC guidance; testimonials missing typical-results disclosure.</p>
+        <div style="display:flex;gap:10px;margin-top:12px"><button class="btn-xs ghost">Open issues</button></div></div>
+    </div>
+
+    <!-- REVIEWS -->
+    <div class="tab" id="t-reviews">
+      <div class="pagehead"><div><h2>Reviews</h2><div class="panel-note">4.9 ★ on Google · 87 reviews · +3 this month</div></div></div>
+      <div class="draft"><div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap"><h4>New ★★★★★ from "Maria G." — 7:02 AM</h4><span class="chip warn">Reply pending approval</span></div>
+        <p>"Down 22 lbs since March. Ann actually listens…"</p>
+        <p style="margin-top:10px;background:var(--linen-2);border-radius:12px;padding:12px 16px"><b>AI-drafted reply:</b> "Thank you so much for the kind words! We're proud of the work our patients put in and glad the experience has felt personal — that's the whole point. 🌅" <i style="color:var(--ink-mute)">(HIPAA-safe: does not confirm patient status.)</i></p>
+        <div style="display:flex;gap:10px;margin-top:12px"><button class="btn-xs">Approve &amp; post</button><button class="btn-xs ghost">Edit</button></div></div>
+    </div>
+
+    <!-- SITE SETTINGS -->
+    <div class="tab" id="t-site">
+      <div class="pagehead"><div><h2>Site settings</h2><div class="panel-note">Controls the public website. Changes deploy via the site repo (daily backup covers everything).</div></div></div>
+      <div class="set-card"><h3>Identity</h3>
+        <div class="set-row"><div class="lab"><b>Site title</b><div class="sub">Shown in browser tabs and search results</div></div><input type="text" value="myprimarynp — Telehealth for Las Vegas"></div>
+        <div class="set-row"><div class="lab"><b>Tagline</b></div><input type="text" value="A better morning starts here"></div>
+        <div class="set-row"><div class="lab"><b>Provider display name</b><div class="sub">Exact credential string, enforced by Compliance Checker</div></div><input type="text" value="Dr. Ann, DNP, APRN, FNP-C"></div>
+        <div class="set-row"><div class="lab"><b>Announcement bar</b><div class="sub">e.g., "Now accepting new patients"</div></div><input class="sw" type="checkbox"></div>
+        <div class="set-row"><div class="lab"><b>Maintenance mode</b><div class="sub">Shows a "back soon" page to visitors</div></div><input class="sw" type="checkbox"></div>
+      </div>
+      <div class="set-card"><h3>SEO &amp; social</h3>
+        <div class="set-row"><div class="lab"><b>Default meta description</b></div><input type="text" value="FDA-approved GLP-1 weight loss & primary care telehealth for Las Vegas."></div>
+        <div class="set-row"><div class="lab"><b>Sitemap auto-update</b></div><input class="sw" type="checkbox" checked></div>
+        <div class="set-row"><div class="lab"><b>Social links</b><div class="sub">Instagram · Facebook · TikTok · YouTube</div></div><button class="btn-xs ghost">Edit links</button></div>
+        <div class="set-row"><div class="lab"><b>Analytics</b><div class="sub">Marketing pages only — never on booking, intake, or portal <span class="locked">policy</span></div></div><input type="text" value="G-XXXXXXX"></div>
+      </div>
+      <div class="set-card"><h3>Trust &amp; legal</h3>
+        <div class="set-row"><div class="lab"><b>LegitScript seal</b><div class="sub">Shows in footer once certification is issued</div></div><input class="sw" type="checkbox"></div>
+        <div class="set-row"><div class="lab"><b>Footer disclaimers</b><div class="sub">NV-only · no guaranteed Rx · membership ≠ meds <span class="locked">required</span></div></div><input class="sw" type="checkbox" checked disabled></div>
+        <div class="set-row"><div class="lab"><b>Legal pages</b></div><button class="btn-xs ghost">Edit privacy / consent / terms</button></div>
+      </div>
+      <div class="savebar"><button class="btn-xs ghost">Discard</button><button class="btn-xs">Save changes</button></div>
+    </div>
+
+    <!-- CLIENT PORTAL SETTINGS -->
+    <div class="tab" id="t-portal">
+      <div class="pagehead"><div><h2>Client portal settings</h2><div class="panel-note">What logged-in patients can see and do. Backed by the EHR's patient portal in production.</div></div></div>
+      <div class="set-card"><h3>Features</h3>
+        <div class="set-row"><div class="lab"><b>Secure messaging</b><div class="sub">Patients can message the practice</div></div><input class="sw" type="checkbox" checked></div>
+        <div class="set-row"><div class="lab"><b>Auto-reply outside hours</b><div class="sub">"We reply within 1 business day; call 911 for emergencies"</div></div><input class="sw" type="checkbox" checked></div>
+        <div class="set-row"><div class="lab"><b>Refill requests</b><div class="sub">Check-in questionnaire required with every request</div></div><input class="sw" type="checkbox" checked></div>
+        <div class="set-row"><div class="lab"><b>Weight progress tracker</b></div><input class="sw" type="checkbox" checked></div>
+        <div class="set-row"><div class="lab"><b>Document sharing</b><div class="sub">Care plans, consents, receipts &amp; superbills</div></div><input class="sw" type="checkbox" checked></div>
+      </div>
+      <div class="set-card"><h3>Self-service</h3>
+        <div class="set-row"><div class="lab"><b>Self-reschedule window</b><div class="sub">How close to a visit patients can reschedule online</div></div><select><option>Up to 24 hours before</option><option selected>Up to 12 hours before</option><option>Up to 2 hours before</option></select></div>
+        <div class="set-row"><div class="lab"><b>Join-link visibility</b></div><select><option selected>15 minutes before visit</option><option>1 hour before visit</option><option>Always visible</option></select></div>
+        <div class="set-row"><div class="lab"><b>Intake reminders</b><div class="sub">Nudge until pre-visit questionnaire is done</div></div><input class="sw" type="checkbox" checked></div>
+      </div>
+      <div class="savebar"><button class="btn-xs ghost">Discard</button><button class="btn-xs">Save changes</button></div>
+    </div>
+
+    <!-- PATIENT SETTINGS -->
+    <div class="tab" id="t-patients">
+      <div class="pagehead"><div><h2>Patient settings</h2><div class="panel-note">Rules for who can become a patient and how care is structured. Clinical guardrails are locked by policy.</div></div></div>
+      <div class="set-card"><h3>New patients</h3>
+        <div class="set-row"><div class="lab"><b>Accepting new patients</b></div><input class="sw" type="checkbox" checked></div>
+        <div class="set-row"><div class="lab"><b>Nevada location verification</b><div class="sub">Attested at booking + verified at every visit <span class="locked">locked</span></div></div><input class="sw" type="checkbox" checked disabled></div>
+        <div class="set-row"><div class="lab"><b>Initial video visit required before any Rx</b><div class="sub">Questionnaire-only prescribing is off, permanently <span class="locked">locked</span></div></div><input class="sw" type="checkbox" checked disabled></div>
+        <div class="set-row"><div class="lab"><b>Minimum age</b></div><select><option selected>18+</option><option>21+</option></select></div>
+        <div class="set-row"><div class="lab"><b>Intake required before first visit</b></div><input class="sw" type="checkbox" checked disabled><span class="locked">locked</span></div>
+      </div>
+      <div class="set-card"><h3>Care policies</h3>
+        <div class="set-row"><div class="lab"><b>Cancellation window</b><div class="sub">Late cancels are charged the visit fee</div></div><select><option>12 hours</option><option selected>24 hours</option><option>48 hours</option></select></div>
+        <div class="set-row"><div class="lab"><b>No-show fee</b></div><input type="number" value="25" style="width:120px"></div>
+        <div class="set-row"><div class="lab"><b>Follow-up cadence (weight loss)</b></div><select><option selected>Monthly</option><option>Every 6 weeks</option><option>Quarterly after month 6</option></select></div>
+        <div class="set-row"><div class="lab"><b>Baseline labs before GLP-1 start</b></div><input class="sw" type="checkbox" checked></div>
+        <div class="set-row"><div class="lab"><b>Welcome email template</b></div><button class="btn-xs ghost">Edit template</button></div>
+      </div>
+      <div class="savebar"><button class="btn-xs ghost">Discard</button><button class="btn-xs">Save changes</button></div>
+    </div>
+
+    <!-- SCHEDULING -->
+    <div class="tab" id="t-sched">
+      <div class="pagehead"><div><h2>Scheduling</h2><div class="panel-note">Visit types and availability shown on the public booking page.</div></div></div>
+      <div class="set-card"><h3>Visit types</h3>
+        <div class="row-item"><div><b>Weight Loss — initial video evaluation</b><div class="sub">30 min · included in membership</div></div><button class="btn-xs ghost">Edit</button></div>
+        <div class="row-item"><div><b>Weight Loss — follow-up</b><div class="sub">15 min · included in membership</div></div><button class="btn-xs ghost">Edit</button></div>
+        <div class="row-item"><div><b>Primary Care — video visit</b><div class="sub">20 min · $49</div></div><button class="btn-xs ghost">Edit</button></div>
+        <button class="btn-xs" style="margin-top:6px">+ Add visit type</button>
+      </div>
+      <div class="set-card"><h3>Availability</h3>
+        <div class="set-row"><div class="lab"><b>Working days</b></div><input type="text" value="Mon – Sat" style="width:160px"></div>
+        <div class="set-row"><div class="lab"><b>Hours</b></div><input type="text" value="8:00 AM – 5:00 PM PT" style="width:200px"></div>
+        <div class="set-row"><div class="lab"><b>Buffer between visits</b></div><select><option>None</option><option selected>10 minutes</option><option>15 minutes</option></select></div>
+        <div class="set-row"><div class="lab"><b>Same-day booking</b></div><input class="sw" type="checkbox" checked></div>
+      </div>
+      <div class="savebar"><button class="btn-xs ghost">Discard</button><button class="btn-xs">Save changes</button></div>
+    </div>
+
+    <!-- BILLING -->
+    <div class="tab" id="t-billing">
+      <div class="pagehead"><div><h2>Billing &amp; payments</h2><div class="panel-note">Stripe under the hood. Membership never includes medication cost — priced separately, always.</div></div></div>
+      <div class="set-card"><h3>Pricing</h3>
+        <div class="set-row"><div class="lab"><b>Weight loss membership</b></div><input type="number" value="129" style="width:120px"></div>
+        <div class="set-row"><div class="lab"><b>Primary care visit</b></div><input type="number" value="49" style="width:120px"></div>
+        <div class="set-row"><div class="lab"><b>Concierge membership</b></div><input type="number" value="85" style="width:120px"></div>
+        <div class="set-row"><div class="lab"><b>First-month promo</b><div class="sub">Discount on first weight-loss month</div></div><input class="sw" type="checkbox"></div>
+      </div>
+      <div class="set-card"><h3>Payments</h3>
+        <div class="set-row"><div class="lab"><b>Stripe</b><div class="sub">Payouts to ••••4821</div></div><span class="chip ok">Connected</span></div>
+        <div class="set-row"><div class="lab"><b>Failed-payment retries</b></div><select><option>1 retry</option><option selected>3 retries over 7 days</option></select></div>
+        <div class="set-row"><div class="lab"><b>Pause membership on failed payment</b></div><input class="sw" type="checkbox" checked></div>
+        <div class="set-row"><div class="lab"><b>Superbills for out-of-network claims</b></div><input class="sw" type="checkbox" checked></div>
+      </div>
+      <div class="savebar"><button class="btn-xs ghost">Discard</button><button class="btn-xs">Save changes</button></div>
+    </div>
+
+    <!-- INTEGRATIONS -->
+    <div class="tab" id="t-integrations">
+      <div class="pagehead"><div><h2>Integrations</h2><div class="panel-note">The site stays a thin shell — clinical work lives in the EHR.</div></div></div>
+      <div class="row-item"><div><b>Healthie (EHR)</b><div class="sub">Booking embed · intake forms · telehealth video · e-prescribing · patient portal · BAA signed</div></div><span class="chip ok">Connected</span></div>
+      <div class="row-item"><div><b>Stripe</b><div class="sub">Memberships &amp; per-visit payments</div></div><span class="chip ok">Connected</span></div>
+      <div class="row-item"><div><b>Google Business Profile</b><div class="sub">Reviews feed + Review Responder agent</div></div><span class="chip ok">Connected</span></div>
+      <div class="row-item"><div><b>GitHub</b><div class="sub">Site repo · daily backup action · deploy to Render</div></div><span class="chip ok">Connected</span></div>
+      <div class="row-item"><div><b>Social scheduler</b><div class="sub">Queues Social Media agent output (IG/FB/TikTok)</div></div><span class="chip warn">Not connected</span></div>
+      <div class="row-item"><div><b>Lab partner (Quest/Labcorp)</b><div class="sub">Orders via EHR; draw sites near patient</div></div><span class="chip ok">Via EHR</span></div>
+    </div>
+
+    <!-- TEAM -->
+    <div class="tab" id="t-team">
+      <div class="pagehead"><div><h2>Team &amp; roles</h2><div class="panel-note">Least-privilege access. Only clinicians see clinical data.</div></div></div>
+      <div class="row-item"><div><b>Dr. Ann, DNP, APRN, FNP-C</b><div class="sub">Provider-Admin · full clinical + settings access · 2FA ✓</div></div><span class="chip ok">Owner</span></div>
+      <div class="row-item"><div><b>McKhoi N.</b><div class="sub">Operations Admin · site, agents, billing, settings · no clinical charts · 2FA ✓</div></div><span class="chip ok">Active</span></div>
+      <div class="row-item"><div><b>Front office (future)</b><div class="sub">Scheduling + messages triage only</div></div><button class="btn-xs ghost">Invite</button></div>
+      <div class="set-card" style="margin-top:16px"><h3>Security</h3>
+        <div class="set-row"><div class="lab"><b>Require 2FA for all accounts</b></div><input class="sw" type="checkbox" checked disabled><span class="locked">locked</span></div>
+        <div class="set-row"><div class="lab"><b>Session timeout</b></div><select><option>15 minutes</option><option selected>30 minutes</option><option>1 hour</option></select></div>
+        <div class="set-row"><div class="lab"><b>Log all record access</b><div class="sub">Feeds the audit log</div></div><input class="sw" type="checkbox" checked disabled><span class="locked">locked</span></div>
+      </div>
+    </div>
+
+    <!-- NOTIFICATIONS -->
+    <div class="tab" id="t-notifs">
+      <div class="pagehead"><div><h2>Notifications</h2><div class="panel-note">Where each event pings Ann and staff.</div></div></div>
+      <div class="set-card"><h3>Clinical</h3>
+        <div class="set-row"><div class="lab"><b>New booking</b></div><select><option selected>Email + SMS</option><option>Email</option><option>Off</option></select></div>
+        <div class="set-row"><div class="lab"><b>New intake submitted</b></div><select><option selected>Email + SMS</option><option>Email</option></select></div>
+        <div class="set-row"><div class="lab"><b>Patient message received</b></div><select><option selected>Email</option><option>Email + SMS</option></select></div>
+        <div class="set-row"><div class="lab"><b>Flagged intake (contraindication)</b></div><select><option selected>SMS immediately</option><option>Email</option></select></div>
+      </div>
+      <div class="set-card"><h3>Business</h3>
+        <div class="set-row"><div class="lab"><b>New Google review</b></div><select><option selected>Email</option><option>Off</option></select></div>
+        <div class="set-row"><div class="lab"><b>Agent draft ready / blocked</b></div><select><option selected>Email digest (daily)</option><option>Each event</option></select></div>
+        <div class="set-row"><div class="lab"><b>Failed payment</b></div><select><option selected>Email</option><option>Email + SMS</option></select></div>
+        <div class="set-row"><div class="lab"><b>Backup failure</b></div><select><option selected>SMS immediately</option><option>Email</option></select></div>
+      </div>
+      <div class="savebar"><button class="btn-xs ghost">Discard</button><button class="btn-xs">Save changes</button></div>
+    </div>
+
+    <!-- AUDIT -->
+    <div class="tab" id="t-audit">
+      <div class="pagehead"><div><h2>Audit log</h2><div class="panel-note">Every sign-in, settings change, and record access. Exportable for compliance reviews.</div></div></div>
+      <div class="log" style="max-height:none">
+<span class="t">Aug 11 08:59</span> <span class="g">ann@myprimarynp.com</span> signed in · 2FA ✓ · Las Vegas, NV<br>
+<span class="t">Aug 11 08:47</span> <span class="g">mckhoi@myprimarynp.com</span> updated provider display name → "Dr. Ann, DNP, APRN, FNP-C"<br>
+<span class="t">Aug 11 07:05</span> <span class="g">ann</span> approved review reply (Maria G.)<br>
+<span class="t">Aug 10 21:12</span> <span class="g">ann</span> viewed chart: Jane D. (via EHR)<br>
+<span class="t">Aug 10 09:15</span> <span class="o">system</span> compliance-checker blocked draft "success stories"<br>
+<span class="t">Aug 09 14:30</span> <span class="g">mckhoi</span> changed cancellation window 12h → 24h<br>
+<span class="t">Aug 08 17:01</span> <span class="g">system</span> weekly analytics report generated<br>
+<span class="t">Aug 08 11:20</span> <span class="o">system</span> failed sign-in attempt (unknown IP) → blocked, alert sent
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+function go(e, id){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  document.querySelectorAll('aside button.nav').forEach(b=>b.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  e.currentTarget.classList.add('on');
+  document.querySelector('main').scrollTop = 0; window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Book a visit — myprimarynp</title>
+<meta name="description" content="Schedule your telehealth video visit with myprimarynp in Las Vegas.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;700&family=Work+Sans:ital,wght@0,400;0,500;0,700;1,400&family=DM+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" type="image/svg+xml" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120"><rect x="4" y="4" width="112" height="112" rx="28" fill="%23D96C4F"/><g stroke="%23FAF4EA" stroke-width="7" stroke-linecap="round"><line x1="60" y1="24" x2="60" y2="36"/><line x1="34" y1="35" x2="43" y2="44"/><line x1="86" y1="35" x2="77" y2="44"/></g><path d="M 36 80 A 24 24 0 0 1 84 80 Z" fill="%23FAF4EA"/><rect x="28" y="86" width="64" height="6" rx="3" fill="%23FAF4EA"/></svg>'>
+</head>
+<body>
+<div class="demo-note">Demo preview · myprimarynp.com · sample content &amp; reviews for design purposes</div>
+<nav class="top">
+  <div class="wrap nav-inner">
+    <a class="logo" href="index.html"><svg width="38" height="38" viewBox="0 0 120 120"><g stroke="#E9A23B" stroke-width="7" stroke-linecap="round"><line x1="60" y1="16" x2="60" y2="30"/><line x1="29" y1="29" x2="39" y2="39"/><line x1="91" y1="29" x2="81" y2="39"/><line x1="14" y1="60" x2="28" y2="60"/><line x1="106" y1="60" x2="92" y2="60"/></g><path d="M 33 78 A 27 27 0 0 1 87 78 Z" fill="#D96C4F"/><rect x="20" y="84" width="80" height="6" rx="3" fill="#2E2A26"/></svg><span class="word">myprimary<b>np</b></span></a>
+    <div class="nav-links">
+      <div class="dropdown">
+        <a href="#">Services</a>
+        <div class="menu">
+          <a href="weight-loss.html"><b>Medical Weight Loss</b><small>GLP-1 programs · $129/mo</small></a>
+          <a href="primary-care.html"><b>Virtual Primary Care</b><small>Visits from $49</small></a>
+        </div>
+      </div>
+      <a href="blog.html">Blog</a>
+      <a href="faq.html">FAQ</a>
+      <a href="index.html#reviews">Reviews</a>
+      <a href="portal.html" style="font-weight:700">Client login</a>
+      <a class="btn btn-clay btn-sm" href="book.html">Book a visit →</a>
+    </div>
+  </div>
+</nav>
+<section><div class="wrap">
+  <div class="sec-head"><span class="mono">Appointment scheduling</span><h2>Pick a time. We'll take it from there.</h2>
+  <p style="color:var(--ink-soft);margin-top:10px">All visits are live video visits. New weight-loss patients: your first appointment is the required initial evaluation.</p></div>
+  <div class="book-grid">
+    <div class="card" style="padding:30px">
+      <label for="svc">Visit type</label>
+      <select id="svc">
+        <option>Weight Loss — initial video evaluation (30 min)</option>
+        <option>Weight Loss — follow-up (15 min)</option>
+        <option>Primary Care — video visit (20 min)</option>
+      </select>
+      <label>August 2026</label>
+      <div class="cal" id="cal"></div>
+      <div id="slotwrap" style="display:none">
+        <label>Available times (Pacific)</label>
+        <div class="slots" id="slots"></div>
+      </div>
+    </div>
+    <div class="card" style="padding:30px">
+      <h3 class="card-t" style="margin-top:0">Your details</h3>
+      <form id="bform" onsubmit="return confirmBooking(event)">
+        <label for="nm">Full name</label><input id="nm" required placeholder="Jane Doe">
+        <label for="em">Email</label><input id="em" type="email" required placeholder="you@email.com">
+        <label for="ph">Phone</label><input id="ph" type="tel" required placeholder="(702) 555-0100">
+        <label style="display:flex;gap:10px;align-items:flex-start;font-weight:400;margin-top:18px"><input type="checkbox" required style="width:auto;margin-top:4px">I confirm I will be physically located in Nevada at the time of my visit.</label>
+        <div id="pick" style="margin:16px 0 4px;font-size:14px;color:var(--ink-mute)">Select a date and time on the left.</div>
+        <button class="btn btn-clay" style="margin-top:12px;width:100%;justify-content:center" type="submit">Confirm appointment →</button>
+        <p style="font-size:12.5px;color:var(--ink-mute);margin-top:12px">Demo only — the production site embeds live scheduling from the practice EHR (e.g., Healthie), synced to Ann's real calendar.</p>
+      </form>
+      <div id="done" style="display:none;text-align:center;padding:30px 10px">
+        <svg width="54" height="54" viewBox="0 0 24 24" fill="none" stroke="#6E8A6A" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M8 12.5l2.6 2.6L16 9.5"/></svg>
+        <h3 class="card-t">You're booked!</h3>
+        <p id="donetxt" style="color:var(--ink-soft);font-size:15px"></p>
+        <p style="color:var(--ink-mute);font-size:13.5px;margin-top:10px">Check your email for the video link and intake questionnaire — please complete it before your visit.</p>
+      </div>
+    </div>
+  </div>
+</div></section>
+<script>
+const cal = document.getElementById('cal');
+['S','M','T','W','T','F','S'].forEach(d=>{const e=document.createElement('div');e.className='dow';e.textContent=d;cal.appendChild(e)});
+// August 2026 starts on a Saturday
+for(let i=0;i<6;i++) cal.appendChild(document.createElement('div'));
+let selDay=null, selSlot=null;
+for(let d=1;d<=31;d++){
+  const b=document.createElement('button');b.textContent=d;
+  const dow=(6+d-1)%7;
+  if(d<12||dow===0) b.disabled=true;  // past days & Sundays unavailable in demo
+  b.onclick=()=>{document.querySelectorAll('.cal button').forEach(x=>x.classList.remove('sel'));b.classList.add('sel');selDay=d;selSlot=null;renderSlots();updatePick();};
+  cal.appendChild(b);
+}
+function renderSlots(){
+  const wrap=document.getElementById('slotwrap'), s=document.getElementById('slots');
+  wrap.style.display='block'; s.innerHTML='';
+  ['8:30 AM','9:15 AM','10:45 AM','1:00 PM','2:30 PM','4:15 PM'].forEach((t,i)=>{
+    const b=document.createElement('button'); b.textContent=t;
+    if((selDay+i)%5===0) { b.disabled=true; b.style.opacity=.35; }
+    b.onclick=()=>{document.querySelectorAll('.slots button').forEach(x=>x.classList.remove('sel'));b.classList.add('sel');selSlot=t;updatePick();};
+    s.appendChild(b);
+  });
+}
+function updatePick(){
+  const p=document.getElementById('pick');
+  p.textContent = selDay ? (selSlot ? `Selected: August ${selDay}, 2026 at ${selSlot} PT` : `August ${selDay} — now pick a time.`) : 'Select a date and time on the left.';
+  if(selSlot) p.style.color='var(--sage-dark)';
+}
+function confirmBooking(e){
+  e.preventDefault();
+  if(!selDay||!selSlot){alert('Please pick a date and time first.');return false}
+  document.getElementById('bform').style.display='none';
+  document.getElementById('donetxt').textContent=`${document.getElementById('svc').value} — August ${selDay}, 2026 at ${selSlot} PT.`;
+  document.getElementById('done').style.display='block';
+  return false;
+}
+</script>
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a class="logo" href="index.html"><svg width="30" height="30" viewBox="0 0 120 120"><g stroke="#E9A23B" stroke-width="7" stroke-linecap="round"><line x1="60" y1="16" x2="60" y2="30"/><line x1="29" y1="29" x2="39" y2="39"/><line x1="91" y1="29" x2="81" y2="39"/><line x1="14" y1="60" x2="28" y2="60"/><line x1="106" y1="60" x2="92" y2="60"/></g><path d="M 33 78 A 27 27 0 0 1 87 78 Z" fill="#D96C4F"/><rect x="20" y="84" width="80" height="6" rx="3" fill="#2E2A26"/></svg><span class="word" style="font-size:19px">myprimary<b>np</b></span></a>
+        <p style="font-size:13.5px;color:var(--ink-mute);margin-top:12px;max-width:230px">Primary care &amp; medical weight loss for Las Vegas, by telehealth.</p>
+        <div class="social">
+  <a href="#" aria-label="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C25A3F" stroke-width="2" stroke-linecap="round"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="17.8" cy="6.2" r="1.3" fill="#C25A3F" stroke="none"/></svg></a>
+  <a href="#" aria-label="Facebook"><svg width="18" height="18" viewBox="0 0 24 24" fill="#C25A3F"><path d="M15.5 3.5H13c-2.2 0-4 1.8-4 4v3H6.5v3.5H9V21h3.5v-7h2.7l.55-3.5H12.5v-2.4c0-.6.5-1.1 1.1-1.1h1.9z"/></svg></a>
+  <a href="#" aria-label="TikTok"><svg width="18" height="18" viewBox="0 0 24 24" fill="#C25A3F"><path d="M16.6 3c.4 1.9 1.7 3.4 3.9 3.7v3.1c-1.5 0-2.8-.4-3.9-1.2v5.9c0 3.7-2.6 6-5.9 6-3.1 0-5.7-2.2-5.7-5.5 0-3.6 3-5.8 6.4-5.5v3.2c-1.6-.4-3.2.6-3.2 2.3 0 1.5 1.2 2.4 2.5 2.4 1.5 0 2.7-1 2.7-3.1V3z"/></svg></a>
+  <a href="#" aria-label="YouTube"><svg width="18" height="18" viewBox="0 0 24 24" fill="#C25A3F"><path d="M22 12c0-2.2-.2-3.8-.5-4.6-.3-.9-1-1.5-1.9-1.7C17.9 5.3 12 5.3 12 5.3s-5.9 0-7.6.4c-.9.2-1.6.8-1.9 1.7C2.2 8.2 2 9.8 2 12s.2 3.8.5 4.6c.3.9 1 1.4 1.9 1.7 1.7.4 7.6.4 7.6.4s5.9 0 7.6-.4c-.9-.2 1.6-.8 1.9-1.7.3-.8.5-2.4.5-4.6zM10 15.5v-7l6 3.5z"/></svg></a>
+</div>
+      </div>
+      <div class="col"><div class="mono">Care</div><a href="weight-loss.html">Medical Weight Loss</a><a href="primary-care.html">Virtual Primary Care</a><a href="book.html">Book a visit</a><a href="portal.html">Client login</a></div>
+      <div class="col"><div class="mono">Company</div><a href="index.html#about">About Ann</a><a href="blog.html">Blog</a><a href="faq.html">FAQ</a><a href="index.html#reviews">Reviews</a></div>
+      <div class="col"><div class="mono">Legal</div><a href="#">Privacy Policy</a><a href="#">Telehealth Consent</a><a href="#">Terms of Service</a><a href="#">Accessibility</a></div>
+    </div>
+    <p class="disclaimer">myprimarynp serves patients physically located in Nevada only; your location is verified at every visit. A prescription is never guaranteed — all treatment decisions are made by your provider during a live video visit based on your individual health. Weight-loss results vary. Membership fees do not include the cost of medication. If you are experiencing a medical emergency, call 911. © 2026 myprimarynp · Las Vegas, NV · [LegitScript seal placement]</p>
+  </div>
+</footer>
+</body>
+</html>
