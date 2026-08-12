@@ -143,6 +143,25 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--clay);border-col
 .alt-bg{background:var(--linen-2)}
 .alt-bg .svc-tag{background:#fff}
 
+/* VISIT-NOTE CHART CARD (primary-care hero) */
+.chart-wrap{position:relative;max-width:440px;justify-self:end;width:100%}
+.chart-card{background:var(--card);border:1px solid var(--line);border-radius:22px;box-shadow:0 24px 48px -24px rgba(46,42,38,.30);padding:26px 26px 20px;transform:rotate(1.4deg)}
+.chart-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:16px}
+.chart-tag{display:inline-block;font-family:'DM Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;background:var(--ink);color:var(--card);padding:4px 10px;border-radius:6px}
+.chart-card h4{font-family:'Outfit',sans-serif;font-weight:700;font-size:16px;margin:12px 0 2px;color:var(--ink)}
+.chart-sub{font-size:13px;color:var(--ink-mute)}
+.chart-date{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-mute);white-space:nowrap}
+.chart-svg{margin:14px 0 4px}
+.chart-figures{display:flex;justify-content:space-between;gap:12px;border-top:1px dashed var(--line);padding-top:14px;margin-top:8px}
+.chart-figures .num{font-family:'DM Mono',monospace;font-size:17px;font-weight:500;color:var(--ink)}
+.chart-figures .num.down{color:var(--clay-dark)}
+.chart-figures .lbl{display:block;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-mute);margin-top:2px}
+.float-pill{position:absolute;bottom:-16px;left:26px;background:var(--sage-dark);color:#fff;padding:9px 16px;border-radius:999px;box-shadow:0 14px 26px -12px rgba(110,138,106,.6);font-size:13px;font-weight:700;display:flex;align-items:center;gap:7px;transform:rotate(-2deg)}
+@media(max-width:900px){
+  .chart-wrap{justify-self:start;margin-top:8px}
+  .chart-card{transform:none}
+}
+
 /* WHY NP-LED */
 .why-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:52px;align-items:center}
 .why-list{display:flex;flex-direction:column;gap:24px;margin-top:30px}
